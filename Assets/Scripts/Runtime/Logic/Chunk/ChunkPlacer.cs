@@ -114,7 +114,7 @@ namespace ArmorVehicle
 
         public void Tick()
         {
-            if (chunks.Count - 2 < config.initialVisibleChunkCount) return;
+            if (config != null && chunks.Count - 2 < config.initialVisibleChunkCount) return;
 
             if (chunks.Count == 0 || chunkPointerEnd + 1 >= chunks.Count) return;
 
