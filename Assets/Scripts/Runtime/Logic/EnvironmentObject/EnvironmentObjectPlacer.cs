@@ -25,6 +25,7 @@ namespace ArmorVehicle
             foreach (var position in chunk.GetEnvironmentObjectPositions())
             {
                 newObject = interactorPool.Get<EnvironmentObject>().Get();
+                if (newObject == null) continue;
                 newObject.transform.position = position;
                 environmentObjects[chunk].Add(newObject);
             }

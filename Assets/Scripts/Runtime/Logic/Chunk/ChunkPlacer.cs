@@ -43,8 +43,8 @@ namespace ArmorVehicle
 
             int initialVisibleChunkCount = config.initialVisibleChunkCount;
 
-            chunkPointerStart = 0;
-            chunkPointerEnd = initialVisibleChunkCount;
+            chunkPointerStart = 0;        
+            chunkPointerEnd = initialVisibleChunkCount;         
 
             foreach (var chunkSettings in config.chunkSpawnSettings)
             {
@@ -53,7 +53,7 @@ namespace ArmorVehicle
                 movementTracker.AddDistance(chunks[^1].GetDistance());
 
                 if (initialVisibleChunkCount > 0)
-                { 
+                {
                     environmentObjectPlacer.SpawnObject(chunks[^1]);
                     enemyPlacer.SpawnEnemy(chunks[^1], chunkSettings.enemiesPerChunk);
                 }
@@ -69,7 +69,8 @@ namespace ArmorVehicle
 
             movementTracker.AddDistance(chunks[^1].GetDistance() * 0.5f);
 
-            chunks[^1].gameObject.SetActive(false);
+            if (chunks.Count - 2 > config.initialVisibleChunkCount)
+                chunks[^1].gameObject.SetActive(false);
         }
 
         void SpawnChunk(Chunk chunkPrefab, Vector3? spawnPosition = null)
@@ -113,6 +114,8 @@ namespace ArmorVehicle
 
         public void Tick()
         {
+            if (chunks.Count - 2 < config.initialVisibleChunkCount) return;
+
             if (chunks.Count == 0 || chunkPointerEnd + 1 >= chunks.Count) return;
 
             if (Vector3.Distance(chunks[chunkPointerEnd].End.position, car.transform.position) <= config.chunkActivationDistance)

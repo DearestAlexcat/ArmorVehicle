@@ -14,7 +14,7 @@ namespace ArmorVehicle
         [Tooltip("Environment objects are randomly selected and spawned on the chunk")]
         public EnvironmentObject[] environmentObjects;
         [Tooltip("Number of chunks displayed at game start")]
-        [Min(0)] public int initialVisibleChunkCount;
+        [Min(5)] public int initialVisibleChunkCount;
         [Tooltip("After how many meters to show the next chunk")]
         [Min(0)] public int chunkActivationDistance;
 

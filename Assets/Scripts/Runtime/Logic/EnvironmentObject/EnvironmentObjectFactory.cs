@@ -13,6 +13,7 @@ namespace ArmorVehicle
 
         public EnvironmentObject Create()
         {
+            if (environmentPrefabs.Length == 0) return null;
             return Object.Instantiate(environmentPrefabs[Random.Range(0, environmentPrefabs.Length)]);
         }
     }

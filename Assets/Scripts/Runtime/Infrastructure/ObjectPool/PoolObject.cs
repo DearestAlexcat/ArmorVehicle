@@ -31,6 +31,7 @@ namespace ArmorVehicle
             for (int i = 0; i < initialSize; ++i)
             {
                 T obj = Create();
+                if (obj == null) continue;
                 obj.gameObject.SetActive(false);
                 //obj.name = Time.realtimeSinceStartup.ToString();
                 freeInstances.Push(obj);
@@ -40,13 +41,15 @@ namespace ArmorVehicle
         private T Create()
         {
             T createdObject = factory.Create();
-            createdObject.transform.SetParent(poolContainer);
+            createdObject?.transform.SetParent(poolContainer);
             return createdObject;
         }
 
         public T Get(Transform parent = null)
         {
             T item = freeInstances.Count > 0 ? freeInstances.Pop() : Create();
+
+            if(item == null) return null;
 
             if (item is IPoolReturnable<T> link)
                 link.OnReturned += Free;
