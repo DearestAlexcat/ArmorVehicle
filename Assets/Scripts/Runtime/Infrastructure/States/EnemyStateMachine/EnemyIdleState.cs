@@ -38,12 +38,33 @@ namespace ArmorVehicle
 
         async UniTask WaitThenStateAsync(CancellationToken cancellationToken)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(config.idleDuration), cancellationToken: cancellationToken);
-
-            if (enemy.GetState() == EnemyState.Idle)
+            try
             {
-                stateMachine.Enter<EnemyWanderState>().Forget();
+                await UniTask.Delay(TimeSpan.FromSeconds(config.idleDuration), cancellationToken: cancellationToken);
+
+                if (enemy.GetState() == EnemyState.Idle)
+                {
+                    stateMachine.Enter<EnemyWanderState>().Forget();
+                }
             }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+
+        void ResetCancellationTokenSource()
+        {
+            if (cts != null)
+            {
+                cts.Cancel();
+                cts.Dispose();
+                cts = null;
+            }
+        }
+
+        void OnDisable()
+        {
+            ResetCancellationTokenSource();
         }
 
         public UniTask Exit()

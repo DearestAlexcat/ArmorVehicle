@@ -41,12 +41,7 @@ namespace ArmorVehicle
             flyDirection = firePoint.forward;
             transform.rotation = Quaternion.LookRotation(flyDirection);
 
-            if (cts != null)
-            {
-                cts.Cancel();
-                cts.Dispose();
-                cts = null;
-            }
+            ResetCancellationTokenSource();
 
             cts = new CancellationTokenSource();
             FlyAndReturnAsync(cts.Token).Forget();
@@ -62,6 +57,21 @@ namespace ArmorVehicle
             catch (OperationCanceledException)
             {
             }
+        }
+
+        void ResetCancellationTokenSource()
+        {
+            if (cts != null)
+            {
+                cts.Cancel();
+                cts.Dispose();
+                cts = null;
+            }
+        }
+
+        void OnDisable()
+        {
+            ResetCancellationTokenSource();
         }
 
         void FixedUpdate()

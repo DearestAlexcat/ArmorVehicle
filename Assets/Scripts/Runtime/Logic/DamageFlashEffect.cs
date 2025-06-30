@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DamageFlashEffect : MonoBehaviour
@@ -20,10 +21,24 @@ public class DamageFlashEffect : MonoBehaviour
 
     public void FlashWhite()
     {
-        cts?.Cancel();
-        cts?.Dispose();
+        ResetCancellationTokenSource();
         cts = new CancellationTokenSource();
         FlashCoroutine(cts.Token).Forget();
+    }
+
+    void ResetCancellationTokenSource()
+    {
+        if (cts != null)
+        {
+            cts.Cancel();
+            cts.Dispose();
+            cts = null;
+        }
+    }
+
+    void OnDisable()
+    {
+        ResetCancellationTokenSource();
     }
 
     async UniTask FlashCoroutine(CancellationToken cancellationToken)

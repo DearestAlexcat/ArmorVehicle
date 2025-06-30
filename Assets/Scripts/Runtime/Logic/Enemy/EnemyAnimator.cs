@@ -21,28 +21,32 @@ namespace ArmorVehicle
 
         public void PlayIdle(bool value)
         {
+            if (this == null || animator == null) return;
             animator.SetBool(Idle, value);
         }
 
-
         public void PlayHit(Action onEndHitAnimation = null)
         {
+            if (this == null || animator == null) return;
             this.onEndHitAnimation = onEndHitAnimation;
             animator.SetTrigger(Hit);
         }
 
         public void OnExitHitState()
         {
-            onEndHitAnimation?.Invoke();
+            if (this == null || animator == null) return;
+            onEndHitAnimation.Invoke();
         }
 
         public void PlayMove(bool value)
         {
+            if (this == null || animator == null) return;
             animator.SetBool(Running, value);
         }
 
         public void PlayWalking(bool value)
         {
+            if (this == null || animator == null) return;
             animator.SetBool(Walking, value);
         }
     }
